@@ -1,5 +1,5 @@
 //  Natalie Hallmann
-// 	01/28
+// 	01/30
 //  This is a comment
 //  The setup function function is called once when your program begins
 var boids = []; //initializes boids array
