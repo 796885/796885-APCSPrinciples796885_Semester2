@@ -1,12 +1,16 @@
-//  Your Name
-// 	Date or version number
+//  Natalie Hallmann
+// 	2/11
 //  This is a comment
 //  The setup function function is called once when your program begins
 var nmobiles=4000;
 var mobiles=[];
 var noisescale;
 var a1, a2, a3, a4, a5, amax;
+var ships = []; //declares array
+var mainBall;
+
 // var bw=true;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   background(9, 118, 214);
@@ -14,7 +18,10 @@ function setup() {
   // colorMode(HSB, 360, 255, 255, 255);
   strokeWeight(.3);
   reset();
+
+  loadObjects(50);
 }
+
 function reset() {
   noisescale=random(.01, .1);
   noiseDetail(int(random(1,5)));
@@ -28,19 +35,36 @@ function reset() {
     mobiles[i] = new Mobile(i);
   }
 }
+
 function draw() {
-	//noiseSeed(millis()*.00004);
+  //noiseSeed(millis()*.00004);
   for (var i = 0; i < nmobiles; i++) {
     mobiles[i].run();
   }
+  runObjects();
 }
+
 function keyReleased() {
   //if (key=="s" || key=="S")saveCanvas("svimg" + day() + "_" + month() + "_" + hour() + "_" + minute() + "_" + second() + ".jpg");
-	 if (key=="s" || key=="S")saveCanvas("POSTHELIOS_NOISE3_" + day() + "_" + month() + "_" + hour() + "_" + minute() + "_" + second() + ".png");
+  if (key=="s" || key=="S")saveCanvas("POSTHELIOS_NOISE3_" + day() + "_" + month() + "_" + hour() + "_" + minute() + "_" + second() + ".png");
 
   if (keyCode==32) reset();
   if(key=="r" || key=="R")setup();
   if(key=="b" || key=="B")bw=!bw;
+}
+
+function loadObjects(x){
+  mainBall = new Ball(random(width/2), random(height/2), random (-.4,.4), random(-.4,.4), -1);
+  for(var i = 0; i < x; i++){
+    ships[i]=new Ship(random(width), random(height), random (-1,1), random(-1,1), i);
+  }
+}
+
+function runObjects(){
+  mainBall.run();
+  for(var i = 0; i < ships.length; i++){
+    ships[i].run();
+}
 }
 
 function Mobile(index) {
@@ -50,8 +74,8 @@ function Mobile(index) {
   this.position0=createVector(random(0, width), random(0, height), random(0, sin(height)));
   this.position=this.position0.copy();
   this.trans=random(50, 100);
-//  this.hu=(noise(a1*sin(PI*this.position.x/width), a1*cos(PI*this.position.y/height))*720)%360;//random(360);
-	this.hu=(noise(a1*cos(PI*this.position.x/width), a1*sin(PI*this.position.y/height))*720)%random(360);
+  //  this.hu=(noise(a1*sin(PI*this.position.x/width), a1*cos(PI*this.position.y/height))*720)%360;//random(360);
+  this.hu=(noise(a1*cos(PI*this.position.x/width), a1*sin(PI*this.position.y/height))*720)%random(360);
   this.sat=noise(a2*sin(PI*this.position.x/width), a2*sin(PI*this.position.y/height))*255;
   this.bri=noise(a3*cos(PI*this.position.x/width), a3*cos(PI*this.position.y/height))*255;
 }
@@ -64,12 +88,12 @@ Mobile.prototype.run = function() {
 // Method to update position
 Mobile.prototype.update = function() {
   this.velocity=createVector( 1-2*noise(a4+a2*sin(TAU*this.position.x/width),
-																				a4+a2*sin(TAU*this.position.y/height)),
-														  1-2*noise(a2+a3*cos(TAU*this.position.x/width),
-																			  a4+a3*cos(TAU*this.position.y/height)));
+  a4+a2*sin(TAU*this.position.y/height)),
+  1-2*noise(a2+a3*cos(TAU*this.position.x/width),
+  a4+a3*cos(TAU*this.position.y/height)));
 
   this.velocity.mult(a5);
-	//100*fbm(this.position);
+  //100*fbm(this.position);
   this.velocity.rotate(sin(100)*noise(a4+a3*sin(TAU*this.position.x/width)));
   this.position0=this.position.copy();
   this.position.add(this.velocity);
@@ -77,10 +101,10 @@ Mobile.prototype.update = function() {
 
 // Method to display
 Mobile.prototype.display = function() {
-	// if(stroke(color(214, 9, 9),this.trans)); else stroke((frameCount*1.8)%360, (millis()%360), (frameCount)%360, this.trans%255);
-	//  if(bw)stroke(0,this.trans); else stroke(this.hu,this.sat,this.bri,this.trans);
+  // if(stroke(color(214, 9, 9),this.trans)); else stroke((frameCount*1.8)%360, (millis()%360), (frameCount)%360, this.trans%255);
+  //  if(bw)stroke(0,this.trans); else stroke(this.hu,this.sat,this.bri,this.trans);
 
-	line(this.position0.x, this.position0.y, this.position.x, this.position.y);
+  line(this.position0.x, this.position0.y, this.position.x, this.position.y);
 
 
   if (this.position.x>width || this.position.x<0||this.position.y>height||this.position.y<0) {
