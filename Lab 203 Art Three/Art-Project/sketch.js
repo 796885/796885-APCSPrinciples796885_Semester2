@@ -19,7 +19,7 @@ function setup() {
   strokeWeight(.3);
   reset();
 
-  loadObjects(50);
+  loadObjects(60);
 }
 
 function reset() {
