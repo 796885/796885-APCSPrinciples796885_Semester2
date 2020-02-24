@@ -1,3 +1,12 @@
 class Orbiters{
-  fill(50,25,50)
+  constructor{}
+
+  run(){
+    this.render();
+    this.update();
+  }
+
+  update(){}
+
+  render(){}
 }
