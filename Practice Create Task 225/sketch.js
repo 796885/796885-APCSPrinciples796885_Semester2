@@ -4,14 +4,14 @@
 //  The setup function function is called once when your program begins
 var balls=[];
 var paddle;
+var circles;
+var triangles;
 function setup() {
   var cnv = createCanvas(800, 800);
   cnv.position((windowWidth-width)/2, 30);
   background(5, 5, 5);
   fill(200, 30, 150);
-loadBalls(1);
-loadCircles(3);
-loadTriangles(3);
+loadObjects(1);
 }
 
 //  The draw function is called @ 30 fps
@@ -31,8 +31,10 @@ function runObjects(){
   paddle.run();
   for(var i=0; i<balls.length; i++){
     balls[i].run();
-    Circles[i].run();
-    Triangles[i].run();
-
+    circles[i].run();
+    triangles[i].run();
+    if (this.IsColliding()=== true)
+            loadObjects(n);
   }
+
 }
